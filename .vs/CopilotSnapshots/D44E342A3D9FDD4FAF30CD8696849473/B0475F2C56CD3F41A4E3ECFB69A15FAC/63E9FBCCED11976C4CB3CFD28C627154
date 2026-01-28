@@ -1,0 +1,43 @@
+﻿Public Class Form2
+    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+
+    End Sub
+
+    Private Sub TextIngresoDeUsuario_TextChanged(sender As Object, e As EventArgs) Handles TextIngresoDeUsuario.TextChanged
+
+    End Sub
+
+    Private Sub TextContraseña_TextChanged(sender As Object, e As EventArgs) Handles TextContraseña.TextChanged
+
+    End Sub
+
+    Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
+        Dim usuario, password As String
+        usuario = TextIngresoDeUsuario.Text
+        password = TextContraseña.Text
+        If (usuario = "Central") And (password = "12345") Then
+            MessageBox.Show("Bienvenido al sistema", "Acceso Permitido", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Me.Hide()
+            Form3.Show()
+        Else
+            MessageBox.Show("Usuario o Contraseña Incorrecta", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+    End Sub
+
+    Private Sub LinkRegitroDeUsuario_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkRegistroDeUsuario.LinkClicked
+        Dim frm As New Form4()
+        frm.Show()
+        frm.ShowDialog()
+
+
+
+    End Sub
+
+    Private Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
+
+    End Sub
+End Class

@@ -1,0 +1,116 @@
+﻿Imports iTextSharp.text.pdf
+Imports iTextSharp.text.pdf.parser
+
+Public Class Gestiondeinventario
+    ' Conexión a la base de datos (igual que en otros formularios)
+    Dim conexion As New Microsoft.Data.SqlClient.SqlConnection("Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Database1;Integrated Security=True;Encrypt=True")
+
+    Private Sub Gestiondeinventario_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Llenar el ComboBox con los nombres de las tablas, excluyendo las no deseadas
+        Try
+            conexion.Open()
+            Dim dt As New DataTable()
+            Dim schema As DataTable = conexion.GetSchema("Tables")
+            For Each row As DataRow In schema.Rows
+                Dim tableName As String = row("TABLE_NAME").ToString()
+                If tableName.ToLower() <> "registro_de_usuario" AndAlso tableName.ToLower() <> "table" Then
+                    Combotablas.Items.Add(tableName)
+                End If
+            Next
+        Catch ex As Exception
+            MessageBox.Show("Error al cargar tablas: " & ex.Message)
+        Finally
+            conexion.Close()
+        End Try
+    End Sub
+
+    Private Sub btnBuscarr_Click(sender As Object, e As EventArgs) Handles btnBuscarr.Click
+
+    End Sub
+
+    Private Sub Combotablas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Combotablas.SelectedIndexChanged
+        Try
+            conexion.Open()
+            Dim tableName As String = Combotablas.SelectedItem.ToString()
+            Dim sql As String = $"SELECT * FROM [{tableName}]"
+            Dim da As New Microsoft.Data.SqlClient.SqlDataAdapter(sql, conexion)
+            Dim dt As New DataTable()
+            da.Fill(dt)
+            DataGridView1.DataSource = dt
+        Catch ex As Exception
+            MessageBox.Show("Error al mostrar la tabla: " & ex.Message)
+        Finally
+            conexion.Close()
+        End Try
+    End Sub
+
+    Private Sub TextBarradeBusqueda_TextChanged(sender As Object, e As EventArgs) Handles TextBarradeBusqueda.TextChanged
+
+    End Sub
+
+    Private Sub TextNombreProducto_TextChanged(sender As Object, e As EventArgs) Handles TextNombreProducto.TextChanged
+
+    End Sub
+
+    Private Sub TextBox4_TextChanged(sender As Object, e As EventArgs) Handles TextMarcaproducto.TextChanged
+
+    End Sub
+
+    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextCantidad.TextChanged
+
+    End Sub
+
+    Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnRegistrar.Click
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
+
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
+
+    End Sub
+
+    Private Sub BtnExtraerPdf_Click(sender As Object, e As EventArgs) Handles BtnExtraerPdf.Click
+        ' Ruta del PDF (debe ser un archivo, no una carpeta)
+        Dim rutaPDF As String = "C:\Users\Usuario\Descargas\archivo.pdf" ' Cambia esta ruta por la correcta
+        Try
+            Dim textoExtraido As String = ExtraerTextoDePdf(rutaPDF)
+            RichTextBox1.Text = textoExtraido
+        Catch ex As Exception
+            MessageBox.Show("Error al extraer texto del PDF: " & ex.Message)
+        End Try
+    End Sub
+
+    ' Función para extraer texto de un PDF usando iTextSharp
+    Private Function ExtraerTextoDePdf(rutaPDF As String) As String
+        Dim texto As New System.Text.StringBuilder()
+        Using reader As New PdfReader(rutaPDF)
+            For i As Integer = 1 To reader.NumberOfPages
+                texto.Append(PdfTextExtractor.GetTextFromPage(reader, i))
+            Next
+        End Using
+        Return texto.ToString()
+    End Function
+
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+
+    End Sub
+
+    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
+
+    End Sub
+End Class
